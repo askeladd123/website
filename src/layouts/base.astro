@@ -1,0 +1,45 @@
+---
+import "@picocss/pico";
+const { name } = Astro.props;
+var class_home = name == "home" ? "secondary" : "primary";
+var class_demo = name == "demo" ? "secondary" : "primary";
+var class_about = name == "about" ? "secondary" : "primary";
+---
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Sødal personal website</title>
+  <style is:global>
+    :root {
+      --pico-font-size: 150%;
+    }
+  </style>
+</head>
+<body>
+  <header class="container-fluid">
+    <nav>
+      <ul>
+        <li><strong>asks.no</strong></li>
+      </ul>
+      <ul>
+        <li>
+          <a href="/" class={class_home}>home</a>
+        </li>
+        <li>
+          <a href="/demo" class={class_demo}>demo</a>
+        </li>
+        <li>
+          <a href="/about" class={class_about}>about</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="container">
+    <slot />
+  </main>
+  <footer class="container-fluid" style="text-align: center">
+    <section></section>
+    <a href="/about" class={class_about}>about</a>
+  </footer>
+</body>

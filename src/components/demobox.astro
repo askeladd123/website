@@ -1,0 +1,28 @@
+---
+const { title } = Astro.props;
+---
+
+<style>
+  img {
+    filter: invert();
+    width: 40px;
+    height: 40px;
+  }
+  button {
+    margin-left: 10px;
+  }
+</style>
+<article>
+  <div style="background-color: blue; height: 520px;">hello</div>
+  <div>
+    <progress value="40" max="100"></progress>
+    <div style="display: flex; align-items: center;">
+      <h1 style="margin: 0; flex: 1;">{title}</h1>
+      <button> <img src="/download.svg" /> </button>
+      <button> <img src="/play.svg" /> </button>
+      <button> <img src="/fullscreen.svg" /> </button>
+    </div>
+    <section></section>
+    <p><slot /></p>
+  </div>
+</article>
