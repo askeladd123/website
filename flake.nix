@@ -17,7 +17,7 @@
           shellHook = "pnpm install --frozen-lockfile";
         };
         packages.default = pkgs.stdenv.mkDerivation (finalAttrs: {
-          pname = "my-static-web";
+          pname = "website";
           version = "0-unstable-2025-03-01";
           src = ./.;
           nativeBuildInputs = [
