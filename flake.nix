@@ -18,8 +18,8 @@
         };
         packages.default = pkgs.stdenv.mkDerivation (finalAttrs: {
           pname = "website";
-          version = "0-unstable-2025-03-01";
           src = ./.;
+          version = "unstable";
           nativeBuildInputs = [
             pkgs.nodejs
             pkgs.pnpm_9.configHook
