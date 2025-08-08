@@ -1,0 +1,4 @@
+- deploy in NixOS containers
+- integrate demos
+  - grabbing with flakes
+  - show in `<iframe>`
