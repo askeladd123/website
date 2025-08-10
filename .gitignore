@@ -2,4 +2,5 @@
 /result
 /dist
 /.astro
+/.tmp
 env.d.ts

@@ -45,5 +45,18 @@
       };
       system.stateVersion = "24.05";
     };
+    nixosConfigurations.default = nixpkgs.lib.nixosSystem {
+      # INFO: imperative use:
+      # ```nushell
+      # nixos-container create website --flake .#default
+      # nixos-container start website
+      # curl $'http://(nixos-container show-ip website)/'
+      # ```
+      inherit system;
+      modules = [
+        self.nixosModules.default
+        ({...}: {boot.isContainer = true;})
+      ];
+    };
   };
 }
