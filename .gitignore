@@ -3,4 +3,5 @@
 /dist
 /.astro
 /.tmp
+/public/external/*
 env.d.ts

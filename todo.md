@@ -1,4 +1,1 @@
-- deploy in NixOS containers
-- integrate demos
-  - grabbing with flakes
-  - show in `<iframe>`
+- switch back from `pnpm` to reguler `npm`, this is less verbose and works well with nix builds

@@ -1,13 +1,15 @@
 {
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+  inputs.demo_pathfinding.url = "github:askeladd123/pathfinding-v2";
   outputs = {
     self,
     nixpkgs,
+    demo_pathfinding,
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
-    devShell.${system}.default = pkgs.mkShell {
+    devShell.${system} = pkgs.mkShell {
       buildInputs = with pkgs; [nodejs pnpm];
       shellHook = "pnpm install --frozen-lockfile";
     };
@@ -29,8 +31,9 @@
         pnpm build
       '';
       installPhase = ''
-        mkdir -p $out
+        mkdir -p $out/external/
         cp -r dist/* $out/
+        ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/external/pathfinding
       '';
     });
     nixosModules.default = {lib, ...}: {
