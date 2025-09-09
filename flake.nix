@@ -45,8 +45,8 @@
       networking.firewall = {
         enable = true;
         allowedTCPPorts = [80];
-        useHostResolvConf = lib.mkForce false; # NOTE: fixes bug https://github.com/NixOS/nixpkgs/issues/162686
       };
+      networking.useHostResolvConf = lib.mkForce false; # NOTE: fixes bug https://github.com/NixOS/nixpkgs/issues/162686
       system.stateVersion = "24.05";
     };
     nixosConfigurations.default = nixpkgs.lib.nixosSystem {
