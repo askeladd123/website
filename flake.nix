@@ -9,9 +9,8 @@
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
-    devShell.${system} = pkgs.mkShell {
+    devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [nodejs pnpm];
-      shellHook = "pnpm install --frozen-lockfile";
     };
     packages.${system}.default = pkgs.stdenv.mkDerivation (finalAttrs: {
       pname = "website";
