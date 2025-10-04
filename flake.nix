@@ -1,40 +1,55 @@
 {
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-  inputs.demo_pathfinding.url = "github:askeladd123/pathfinding-v2";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    demo_pathfinding.url = "github:askeladd123/pathfinding-v2";
+    demo_ants.url = "github:askeladd123/ants";
+  };
   outputs = {
     self,
     nixpkgs,
     demo_pathfinding,
+    demo_ants,
   }: let
+    basename = "website";
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [nodejs pnpm];
     };
-    packages.${system}.default = pkgs.stdenv.mkDerivation (finalAttrs: {
-      pname = "website";
-      src = ./.;
-      version = "unstable";
-      nativeBuildInputs = [
-        pkgs.nodejs
-        pkgs.pnpm_9.configHook
-      ];
-      pnpmDeps = pkgs.pnpm_9.fetchDeps {
-        inherit (finalAttrs) pname version src;
-        fetcherVersion = 1;
-        hash = "sha256-KKRBqMBLs386QW6fgt0GS9f9nq/yzFSN59XZyazQqlM=";
+    packages.${system}.default = let
+      main = pkgs.buildNpmPackage {
+        name = "${basename}-no-demos";
+        src = ./.;
+        npmDepsHash = "sha256-z8hxmEft8V9suUzJAMX6GMuShnedVrReRE+GqpEKYDg=";
+        installPhase = ''
+          mkdir $out
+          cp --recursive --no-preserve=mode,ownership dist/. $out/
+        '';
       };
-      buildPhase = ''
-        pnpm install --frozen-lockfile --offline
-        pnpm build
-      '';
-      installPhase = ''
-        mkdir -p $out/external/
-        cp -r dist/* $out/
-        ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/external/pathfinding
-      '';
-    });
+    in
+      pkgs.symlinkJoin {
+        name = basename;
+        paths = [main];
+        postBuild = ''
+          mkdir --parents $out/external
+          ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/external/pathfinding
+          ln --symbolic ${demo_ants.packages.${system}.default} $out/external/ants
+        '';
+      };
+    apps.${system}.default = let
+      testServer = pkgs.writeShellApplication {
+        name = "${basename}-test-server";
+        runtimeInputs = with pkgs; [static-web-server];
+        text = ''
+          echo "serving, visit http://localhost:8080 in a browser"
+          static-web-server --port 8080 --root ${self.packages.${system}.default}
+        '';
+      };
+    in {
+      type = "app";
+      program = "${testServer}/bin/${basename}-test-server";
+    };
     nixosModules.default = {lib, ...}: {
       services.static-web-server = {
         enable = true;
