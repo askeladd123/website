@@ -1,1 +1,3 @@
-- switch back from `pnpm` to reguler `npm`, this is less verbose and works well with nix builds
+- build standalone
+  - boat
+  - pathfinding v1

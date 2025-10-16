@@ -15,28 +15,33 @@
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     devShells.${system}.default = pkgs.mkShell {
-      buildInputs = with pkgs; [nodejs pnpm];
+      buildInputs = with pkgs; [nodejs];
     };
-    packages.${system}.default = let
-      main = pkgs.buildNpmPackage {
-        name = "${basename}-no-demos";
-        src = ./.;
-        npmDepsHash = "sha256-z8hxmEft8V9suUzJAMX6GMuShnedVrReRE+GqpEKYDg=";
-        installPhase = ''
-          mkdir $out
-          cp --recursive --no-preserve=mode,ownership dist/. $out/
-        '';
-      };
-    in
-      pkgs.symlinkJoin {
-        name = basename;
-        paths = [main];
-        postBuild = ''
-          mkdir --parents $out/external
-          ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/external/pathfinding
-          ln --symbolic ${demo_ants.packages.${system}.default} $out/external/ants
-        '';
-      };
+    packages.${system} = rec {
+      demos = pkgs.runCommand "combine-demos" {} ''
+        mkdir $out
+        ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/pathfinding
+        ln --symbolic ${demo_ants.packages.${system}.default} $out/ants
+      '';
+      default = let
+        main = pkgs.buildNpmPackage {
+          name = "${basename}-no-demos";
+          src = ./.;
+          npmDepsHash = "sha256-z8hxmEft8V9suUzJAMX6GMuShnedVrReRE+GqpEKYDg=";
+          installPhase = ''
+            mkdir $out
+            cp --recursive --no-preserve=mode,ownership dist/. $out/
+          '';
+        };
+      in
+        pkgs.symlinkJoin {
+          name = basename;
+          paths = [main];
+          postBuild = ''
+            ln --symbolic ${demos} $out/external
+          '';
+        };
+    };
     apps.${system}.default = let
       testServer = pkgs.writeShellApplication {
         name = "${basename}-test-server";
