@@ -18,11 +18,27 @@
       buildInputs = with pkgs; [nodejs];
     };
     packages.${system} = rec {
-      demos = pkgs.runCommand "combine-demos" {} ''
-        mkdir $out
-        ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/pathfinding
-        ln --symbolic ${demo_ants.packages.${system}.default} $out/ants
-      '';
+      demos = let
+        base_url = "https://ask-pub.hel1.your-objectstorage.com/big-track/";
+        tree = pkgs.fetchurl {
+          url = "fa/fab879b038de56ecaa9fc026deb2cc5a/tre.mp4";
+          hash = "sha256-zfieb4emWlxgqf6CzM1GLMXobeh96xAe5Y9BsxPQpYA=";
+        };
+        sailBoat = pkgs.fetchurl {
+          url = "98/986a5883f97eada1291dca0205497fc9/sail-boat.png";
+          hash = "";
+        };
+        mosern = pkgs.fetchurl {
+          url = "big-track/3c/3cf6f89066435a43eeefba7e317033d6/mosern.png";
+          hash = "";
+        };
+      in
+        pkgs.runCommand "combine-demos" {} ''
+          mkdir $out
+          ln --symbolic ${demo_pathfinding.packages.${system}.default} $out/pathfinding
+          ln --symbolic ${demo_ants.packages.${system}.default} $out/ants
+          ln --symbolic ${tree} $out/tree.mp4
+        '';
       default = let
         main = pkgs.buildNpmPackage {
           name = "${basename}-no-demos";

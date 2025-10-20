@@ -17,6 +17,12 @@ import ExplainBox from "../components/explainbox.astro";
     Here I have gathered some of my projects that are more or less presentable.
     I do projects mostly to learn and try out new things, and have fun.
   </p>
+  <ExplainBox title="tree">
+    Asset for video game map.
+    <video controls style="display: block; margin-left: auto; margin-right: auto;">
+      <source src="/external/tree.mp4">
+    </video>
+  </ExplainBox>
   <DemoBox title="pathfinding v1" iframe_link="https://askeladd123.github.io/pathfinding-v1/">
     Visualizing different pathfinding algorithms. (first draft)
   </DemoBox>
@@ -64,7 +70,7 @@ import ExplainBox from "../components/explainbox.astro";
     A game environment for beginners to learn Python; (made it when learning Python 😂). See <a href="https://github.com/askeladd123/battle-bots">code here</a>.
   </ExplainBox>
   <ExplainBox title="nixos">
-    All of my computers runs on NixOS. That means:
+    All of my computers runs on <a href="https://nixos.org/">NixOS</a>. That means:
     <ul>
       <li>configuration</li>
       <li>services</li>
@@ -76,6 +82,4 @@ import ExplainBox from "../components/explainbox.astro";
      ...are configured through one git repo. That includes this website as well.<br><br>
     The git repo is private for security reasons, so you'll just have to imagine what it looks like, but I promise it's really cool.
   </ExplainBox>
-  
-
 </Base>
