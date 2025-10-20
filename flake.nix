@@ -84,6 +84,10 @@
           url = "${base_url}/e6/e6b3c37bda6769552b7982648a60d592/screenshot_space_engineers_scene.jpg";
           hash = "sha256-L/TmtbHZlR34pRKAsIXEzjuUEHvQnTc1wq/icM2gvIY=";
         };
+        other.sailgame = pkgs.fetchurl {
+          url = "${base_url}/43/4328275f8e1ba2c5242961f1e3c73013/sailboat-game-screenshot.png";
+          hash = "sha256-fNC6ZxdMph+hXLg4p7e2kLaq4qqoMk3D3DZ33TnE8B0=";
+        };
       in
         pkgs.runCommand "combine-demos" {} ''
           mkdir --parents $out/code
@@ -111,6 +115,7 @@
           mkdir --parents $out/other
           ln --symbolic ${other.se_drill} $out/other/screenshot_space_engineers_drill.jpg
           ln --symbolic ${other.se_scene} $out/other/screenshot_space_engineers_scene.jpg
+          ln --symbolic ${other.sailgame} $out/other/sailboat-game-screenshot.png
         '';
       default = let
         main = pkgs.buildNpmPackage {

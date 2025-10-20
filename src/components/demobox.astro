@@ -4,7 +4,10 @@ const {
   iframe_link,
   ratio = '16 / 9',
   scale = 0.5, // 1 = no zoom, 0.5 = 50%, 0.25 = 25%
+  preview,     // optional: if provided, load iframe on click
 } = Astro.props;
+
+const compId = `demo-${Math.random().toString(36).slice(2)}`;
 ---
 
 <style>
@@ -34,15 +37,42 @@ const {
     border: 0;
   }
 
+  /* Only for the optional preview image; keeps your existing img/button rules intact */
+  .preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.9;
+  }
+  .click-layer {
+    position: absolute;
+    inset: 0;
+    /* no visible chrome to preserve original look */
+    background: transparent;
+    cursor: pointer;
+  }
+
   img { filter: invert(); width: 40px; height: 40px; }
   button { margin-left: 10px; }
   article { display: grid; gap: 0.75rem; }
 </style>
 
-<article>
+<article id={compId}>
   <div class="frame" style={`--ratio: ${ratio}`}>
     <div class="scaled" style={`--scale: ${scale}`}>
-      <iframe src={iframe_link} loading="lazy"></iframe>
+      {
+        preview
+          ? (
+            <>
+              <img class="preview-img" src={preview} alt={`Preview for ${title}`} loading="lazy" decoding="async" />
+              <span class="click-layer" role="button" aria-label="Load demo" tabindex="0"></span>
+            </>
+          )
+          : (
+            <iframe src={iframe_link} loading="lazy"></iframe>
+          )
+      }
     </div>
   </div>
 
@@ -55,4 +85,52 @@ const {
     <section></section>
     <p><slot /></p>
   </div>
+
+  <noscript>
+    <div class="frame" style={`--ratio: ${ratio}`}>
+      <div class="scaled" style={`--scale: ${scale}`}>
+        <iframe src={iframe_link} loading="lazy"></iframe>
+      </div>
+    </div>
+  </noscript>
 </article>
+
+{preview && (
+  <script define:vars={{ compId, iframe_link, scale }}>
+  (() => {
+    const root = document.getElementById(compId);
+    if (!root) return;
+
+    const frame = root.querySelector(".frame");
+    const scaled = frame?.querySelector(".scaled");
+    const clickLayer = frame?.querySelector(".click-layer");
+    if (!scaled || !clickLayer) return;
+
+    function loadIframe() {
+      if (scaled.querySelector("iframe")) return;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = iframe_link;
+      iframe.loading = "lazy";
+      iframe.style.border = "0";
+      iframe.style.width = `calc(100% / ${scale})`;
+      iframe.style.height = `calc(100% / ${scale})`;
+      iframe.style.transform = `scale(${scale})`;
+      iframe.style.transformOrigin = "0 0";
+
+      const previewImg = scaled.querySelector(".preview-img");
+      previewImg && previewImg.remove();
+      clickLayer && clickLayer.remove();
+      scaled.appendChild(iframe);
+    }
+
+    clickLayer.addEventListener("click", loadIframe);
+    clickLayer.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        loadIframe();
+      }
+    });
+  })();
+  </script>
+)}
