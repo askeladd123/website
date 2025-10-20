@@ -2,37 +2,103 @@
 import Base from "../layouts/base.astro";
 import DemoBox from "../components/demobox.astro";
 import ExplainBox from "../components/explainbox.astro";
+import Slideshow from "../components/slideshow.astro";
 ---
 
 <Base name="demo">
   <p>
-    Here I have gathered some demos of my code. I have picked projects that
-    work visually and that I thought were interesting to show.
+    Here I have gathered some of my projects that are more or less presentable.
+    I do projects mostly to learn and try out new things, and have fun.
   </p>
-  <DemoBox title="pathfinding" iframe_link="/external/pathfinding/index.html">
+  <DemoBox title="pathfinding v1" aspect="16/9" iframe_link="https://askeladd123.github.io/pathfinding-v1/">
+    Visualizing different pathfinding algorithms. (first draft)
+  </DemoBox>
+  <DemoBox title="pathfinding v2" iframe_link="/external/code/pathfinding/index.html">
     Visualizing different pathfinding algorithms. (work in progress)
   </DemoBox>
-  <ExplainBox title="sailing game">
-    This is a game I made about sailing.
+  <Slideshow title="blender 1" aspect="4/5" items={[
+      { kind: "image", src: "/external/blender/sail-boat.png" },
+      { kind: "video", sources: [
+          { src: "/external/blender/tre.mp4", type: "video/mp4" },
+        ]
+      },
+      { kind: "image", src: "/external/blender/axe.png" },
+    ]}>
+  </Slideshow>
+  <Slideshow title="auto drill" aspect="16/9" items={[
+      { kind: "image", src: "/external/other/screenshot_space_engineers_scene.jpg" },
+      { kind: "image", src: "/external/other/screenshot_space_engineers_drill.jpg" },
+    ]}>
+    Are you tired of manually managing your drills in Space Engineers manually? Try <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2250012664">Ask's Drill Script!</a>
+  </Slideshow>
+  <Slideshow title="blender 2" items={[
+      { kind: "image", src: "/external/blender/mosern.png" },
+      { kind: "video", sources: [
+          { src: "/external/blender/hjelm.mp4", type: "video/mp4" }
+        ]
+      },
+    ]}>
+  </Slideshow>
+  <DemoBox title="sailing game" aspect="1/1" iframe_link="https://askeladd123.github.io/boat/">
+    This is a game I am working on about sailing.
+  </DemoBox>
+  <Slideshow title="blender 3" aspect="16/9" items={[
+      { kind: "image", src: "/external/blender/thompson.png" },
+      { kind: "video", sources: [
+          { src: "/external/blender/fjelltest.mp4", type: "video/mp4" },
+        ]
+      },
+      { kind: "image", src: "/external/blender/revolver.png" },
+    ]}>
+  </Slideshow>
+  <DemoBox title="crime downloader" iframe_link="https://askeladd123.github.io/crime-download/">
+    My submission for the UIA Beta Game Jam Autumn 2023 (that I hosted myself 😈)
+  </DemoBox>
+  <ExplainBox title="lampe">
+    A track I made using samples from Odd Børretzen.
+    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" loading="lazy" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1275211807&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/ask-s-dal" title="Ask Sødal" target="_blank" style="color: #cccccc; text-decoration: none;">Ask Sødal</a> · <a href="https://soundcloud.com/ask-s-dal/lampe-med-odd-borretzen" title="lampe (med Odd Børretzen)" target="_blank" style="color: #cccccc; text-decoration: none;">lampe (med Odd Børretzen)</a></div>
   </ExplainBox>
-  <DemoBox title="ant colony" iframe_link="/external/ants/index.html">
+  <Slideshow title="skjær" items={[
+      { kind: "image", src: "/external/draw/scuffed-album-cover.png" },
+      { kind: "image", src: "/external/draw/scuffed-cover.png" },
+    ]}>
+    High school band / summer song.
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/5h7BuNKEOWnljFYwWIawEw?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </Slideshow>
+  <Slideshow title="russelogo" aspect="16/9" items={[
+      { kind: "image", src: "/external/draw/bandit-2019.png" },
+      { kind: "image", src: "/external/draw/logo-ubermensch.png" },
+      { kind: "image", src: "/external/draw/logo-raving-high.png" },
+    ]}>
+  </Slideshow>
+  <ExplainBox title="log timer">
+    A command line program I made that tracks when I do work, for motivation. See <a href="https://github.com/askeladd123/log-timer">code here</a>.
+  </ExplainBox>
+  <ExplainBox title="infonator">
+    A linux desktop program I made as an alternative to a status bar. See <a href="https://github.com/askeladd123/infonator">code here</a>.
+  </ExplainBox>
+  <ExplainBox title="battle bots">
+    A game environment for beginners to learn Python; (made it when learning Python 😂). See <a href="https://github.com/askeladd123/battle-bots">code here</a>.
+  </ExplainBox>
+  <DemoBox title="ant colony" iframe_link="/external/code/ants/index.html">
     This is a simulation that mimics the behaviour of ants to optimize the path
     between food and home. (work in progress)
-  </ExplainBox>
+  </DemoBox>
   <ExplainBox title="huenator">
-    This is a project I used together with home assistant to color my room
-    after my pc monitor.
+    This is the start of a project I am using together with home assistant to color my room,
+    after my pc monitor. See <a href="https://github.com/askeladd123/huenator">code here</a>.
   </ExplainBox>
-  <ExplainBox title="crime downloader">
-    My submission for the UIA Beta Game Jam Autumn 2023 (that I hosted myself 😈)
-  </ExplainBox>
-  <ExplainBox title="thompson">
-    Created a Thompson Machine Gun while learning Blender.
-  </ExplainBox>
-  <ExplainBox title="seilbåt">
-    Created a Sail Boat Sculpture while learning Blender.
-  </ExplainBox>
-  <ExplainBox title="lampe">
-    A track I made using samples from Odd Børretzen. I also made some other stuff, but that's a secret.
-  </ExplainBox>
+  <ExplainBox title="nixos">
+    All of my computers runs on <a href="https://nixos.org/">NixOS</a>. That means:
+    <ul>
+      <li>configuration</li>
+      <li>services</li>
+      <li>scripts</li>
+      <li>programs</li>
+      <li>builds</li>
+    </ul>
+
+     ...are configured through one git repo. That includes this website as well.<br><br>
+    The git repo is private for security reasons, so you'll just have to imagine what it looks like, but I promise it's really cool.
+ </ExplainBox>
 </Base>

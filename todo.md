@@ -1,1 +1,10 @@
-- switch back from `pnpm` to reguler `npm`, this is less verbose and works well with nix builds
+- build standalone
+  - boat
+  - pathfinding v1
+- demobox / slideshow
+  - make unified componets that handle multiple elements of type:
+    - image
+    - video
+    - audio
+    - subpage / code
+    - 3d model?

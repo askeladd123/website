@@ -1,35 +1,58 @@
 ---
-const { title, iframe_link } = Astro.props;
+const {
+  title,
+  iframe_link,
+  ratio = '16 / 9',
+  scale = 0.5, // 1 = no zoom, 0.5 = 50%, 0.25 = 25%
+} = Astro.props;
 ---
 
 <style>
-  iframe {
-    height: 520px;
+  .frame {
     width: 100%;
+    aspect-ratio: var(--ratio, 16 / 9);
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: #000;
   }
-  img {
-    filter: invert();
-    width: 40px;
-    height: 40px;
+
+  /* Scaled viewport layer */
+  .scaled {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    --s: var(--scale, 1);
   }
-  button {
-    margin-left: 10px;
+
+  /* Classic “scale then compensate width/height” trick */
+  .scaled > iframe {
+    width: calc(100% / var(--s));
+    height: calc(100% / var(--s));
+    transform: scale(var(--s));
+    transform-origin: 0 0;
+    border: 0;
   }
+
+  img { filter: invert(); width: 40px; height: 40px; }
+  button { margin-left: 10px; }
+  article { display: grid; gap: 0.75rem; }
 </style>
+
 <article>
-  <iframe src={iframe_link} loading="lazy"></iframe>
+  <div class="frame" style={`--ratio: ${ratio}`}>
+    <div class="scaled" style={`--scale: ${scale}`}>
+      <iframe src={iframe_link} loading="lazy"></iframe>
+    </div>
+  </div>
+
   <div>
-    <!-- <progress value="40" max="100"></progress> -->
     <div style="display: flex; align-items: center;">
       <h1 style="margin: 0; flex: 1;">
         <a href={iframe_link} style="color: inherit;">{title}</a>
       </h1>
-      <!-- <button> <img src="/download.svg" /> </button> -->
-      <!-- <button> <img src="/play.svg" /> </button> -->
-      <!-- <button> <img src="/fullscreen.svg"/> </button> -->
     </div>
     <section></section>
     <p><slot /></p>
   </div>
 </article>
-<!-- TODO: better loading: not have all demos at the same time -->
