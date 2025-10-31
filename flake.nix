@@ -1,8 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    demo_pathfinding.url = "github:askeladd123/pathfinding-v2";
-    demo_ants.url = "github:askeladd123/ants";
+    demo_pathfinding.url = "github:askeladd123/pathfinding-v2/main";
+    demo_ants.url = "github:askeladd123/ants/main";
   };
   outputs = {
     self,

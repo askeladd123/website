@@ -21,15 +21,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1759602132,
-        "narHash": "sha256-6iQYjxWownPKR07goQeOjwzIq3qIqrBw7zOWQnTuGtA=",
+        "lastModified": 1761948343,
+        "narHash": "sha256-UIOhx2XezZaIkaX4ETy4R89ncYYmAaOMGAdpWBox85I=",
         "owner": "askeladd123",
         "repo": "ants",
-        "rev": "f80a377b2574c211c669f3ef597652e3919a7d1e",
+        "rev": "408098ab1546079551905cbd0126dcfbbef6e287",
         "type": "github"
       },
       "original": {
         "owner": "askeladd123",
+        "ref": "main",
         "repo": "ants",
         "type": "github"
       }
@@ -48,6 +49,7 @@
       },
       "original": {
         "owner": "askeladd123",
+        "ref": "main",
         "repo": "pathfinding-v2",
         "type": "github"
       }
