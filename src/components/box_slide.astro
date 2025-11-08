@@ -1,5 +1,6 @@
 <!-- TODO: rewrite this ai slop --> 
 ---
+import BoxBase from "./box_base.astro";
 export type ImageItem = { kind: "image"; src: string; alt?: string };
 export type VideoItem = {
   kind: "video";
@@ -32,7 +33,7 @@ const compId = `ss-${Math.random().toString(36).slice(2)}`;
 ---
 
 <style>
-  article { display: grid; gap: var(--spacing, 0.75rem); }
+  .outer { display: grid; gap: var(--spacing, 0.75rem); }
   .media { position: relative; width: 100%; aspect-ratio: var(--aspect, 16/9); overflow: hidden; border-radius: var(--border-radius, 0.75rem); background: var(--card-background-color, transparent); }
   .slide { position: absolute; inset: 0; display: none; }
   .slide.is-active { display: block; }
@@ -47,7 +48,8 @@ const compId = `ss-${Math.random().toString(36).slice(2)}`;
   @media (prefers-reduced-motion: reduce) { .slide { transition: none !important; } }
 </style>
 
-<article id={compId} style={`--aspect:${aspect}`}>
+<BoxBase>
+<div class="outer" id={compId} style={`--aspect:${aspect}`}>
   <div class="media" data-slideshow>
     {items.map((item, i) => (
       <div class={`slide${i === 0 ? " is-active" : ""}`} data-idx={i} data-kind={item.kind}>
@@ -88,7 +90,7 @@ const compId = `ss-${Math.random().toString(36).slice(2)}`;
   </header>
 
   <slot />
-</article>
+</div>
 
 <script define:vars={{ compId, autoplayActiveVideos }}>
 (() => {
@@ -151,3 +153,4 @@ const compId = `ss-${Math.random().toString(36).slice(2)}`;
   show(0);
 })();
 </script>
+</BoxBase>

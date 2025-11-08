@@ -1,4 +1,5 @@
 ---
+import BoxBase from "./box_base.astro";
 const {
   title,
   iframe_link,
@@ -57,8 +58,8 @@ const compId = `demo-${Math.random().toString(36).slice(2)}`;
   button { margin-left: 10px; }
   article { display: grid; gap: 0.75rem; }
 </style>
-
-<article id={compId}>
+<BoxBase>
+<div id={compId}>
   <div class="frame" style={`--ratio: ${ratio}`}>
     <div class="scaled" style={`--scale: ${scale}`}>
       {
@@ -78,9 +79,9 @@ const compId = `demo-${Math.random().toString(36).slice(2)}`;
 
   <div>
     <div style="display: flex; align-items: center;">
-      <h1 style="margin: 0; flex: 1;">
+      <h2 style="margin: 0; flex: 1;">
         <a href={iframe_link} style="color: inherit;">{title}</a>
-      </h1>
+      </h2>
     </div>
     <section></section>
     <p><slot /></p>
@@ -93,7 +94,7 @@ const compId = `demo-${Math.random().toString(36).slice(2)}`;
       </div>
     </div>
   </noscript>
-</article>
+</div>
 
 {preview && (
   <script define:vars={{ compId, iframe_link, scale }}>
@@ -134,3 +135,4 @@ const compId = `demo-${Math.random().toString(36).slice(2)}`;
   })();
   </script>
 )}
+</BoxBase>
