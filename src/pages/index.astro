@@ -2,8 +2,107 @@
 import Base from "../layouts/base.astro";
 ---
 
+<style>
+  #banner.container {
+    width: min(100%, 900px);
+    aspect-ratio: 6 / 1;
+    max-height: 180px;
+    display: block;
+    margin: 2rem auto;
+
+  }
+</style>
+
 <Base name="home">
-  <h4 style="text-align: center;">(i will put a cool banner here)</h4>
+  <canvas id="banner" class="container"></canvas>
+
+  <script>
+  const canvas = document.getElementById("banner");
+  const ctx = canvas.getContext("2d");
+
+  let x = 250;
+  let y = 80;
+  const w = 250;
+  const h = 48;
+  const SPEED = 20;
+  let vx = SPEED;
+  let vy = SPEED;
+  let lastTime = 0;
+
+  let color = "white";
+  const colors = ["white", "lightblue","pink", "khaki", "skyblue", "darkkhaki", "peachpuff", "papayawhip",  "lightgrey", "palegreen"];
+  let index_colors = 0;
+  function next_color() {
+    if (colors.length - 1 <= index_colors) {
+      index_colors = 0;
+    } else {
+      index_colors += 1;
+    }
+    return colors[index_colors];
+  }
+
+
+  function resizeCanvasToDisplaySize() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+
+    const displayWidth = Math.round(rect.width * dpr);
+    const displayHeight = Math.round(rect.height * dpr);
+
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+    }
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function step(time) {
+    const deltaTime = (time - lastTime) / 1000;
+    lastTime = time;
+
+    resizeCanvasToDisplaySize();
+    update(deltaTime);
+
+    requestAnimationFrame(step);
+  }
+
+  function update(deltaTime) {
+    const { width, height } = canvas.getBoundingClientRect();
+
+    if (y > height - 5) {
+      y = height - 5;
+      vy = -SPEED;
+      color = next_color();
+    }
+    if (y < h) {
+      y = h;
+      vy = SPEED;
+      color = next_color();
+    }
+    if (x > width - w) {
+      x = width - w;
+      vx = -SPEED;
+      color = next_color();
+    }
+    if (x < -1) {
+      x = 0;
+      vx = SPEED;
+      color = next_color();
+    }
+
+    x += vx * deltaTime;
+    y += vy * deltaTime;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.font = "bold 60px Garamond";
+    ctx.fillStyle = color;
+    ctx.fillText("asks.no", x, y);
+  }
+
+  requestAnimationFrame(step);
+  </script>
+
   <p>
     "This is my personal website" - Ask. I use this for whatever comes up
     really. You can find some demos and projects.
