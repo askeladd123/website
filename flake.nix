@@ -154,6 +154,19 @@
         enable = true;
         listen = "0.0.0.0:80";
         root = self.packages.${system}.default;
+        configuration = {
+          # NOTE: uncache html so it responds to changed wasm filenames
+          advanced.headers = [
+            {
+              source = "**/*.html";
+              headers = {"Cache-Control" = "no-cache, must-revalidate";};
+            }
+            {
+              source = "**/main.js";
+              headers = {"Cache-Control" = "no-cache, must-revalidate";};
+            }
+          ];
+        };
       };
       networking.firewall = {
         enable = true;
