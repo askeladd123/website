@@ -150,29 +150,52 @@
       program = "${testServer}/bin/${basename}-test-server";
     };
     nixosModules.default = {lib, ...}: {
-      services.static-web-server = {
+      services.nginx = {
         enable = true;
-        listen = "0.0.0.0:80";
-        root = self.packages.${system}.default;
-        configuration = {
-          # NOTE: uncache html so it responds to changed wasm filenames
-          advanced.headers = [
+
+        virtualHosts."_" = {
+          default = true;
+          listen = [
             {
-              source = "**/*.html";
-              headers = {"Cache-Control" = "no-cache, must-revalidate";};
-            }
-            {
-              source = "**/main.js";
-              headers = {"Cache-Control" = "no-cache, must-revalidate";};
+              addr = "0.0.0.0";
+              port = 80;
             }
           ];
+          # Serve the built site from your package output
+          root = self.packages.${system}.default;
+
+          # Be explicit: nginx uses ETags; keep it on for this vhost
+          extraConfig = ''
+            etag on;
+          '';
+
+          # Cache rules
+          locations = {
+            # All HTML: avoid caching so new WASM/asset filenames are picked up
+            "~* \\.html$" = {
+              extraConfig = ''
+                add_header Cache-Control "no-cache, must-revalidate" always;
+              '';
+            };
+
+            # Any path that ends with "main.js" (works in subdirectories)
+            "~* /main\\.js$" = {
+              extraConfig = ''
+                add_header Cache-Control "no-cache, must-revalidate" always;
+              '';
+            };
+          };
         };
       };
+
       networking.firewall = {
         enable = true;
         allowedTCPPorts = [80];
       };
-      networking.useHostResolvConf = lib.mkForce false; # NOTE: fixes bug https://github.com/NixOS/nixpkgs/issues/162686
+
+      # Workaround noted in your original config
+      networking.useHostResolvConf = lib.mkForce false;
+
       system.stateVersion = "24.05";
     };
     nixosConfigurations.default = nixpkgs.lib.nixosSystem {
